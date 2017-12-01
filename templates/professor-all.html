@@ -1,0 +1,36 @@
+{% extends "home-base.html"%}
+{% block title %}All Professors{% endblock %}
+{% block page_content%}
+
+  <div class="container">
+    <h1 class="mt-5"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Professors:</h1>
+    <div class="row bottom-margin">
+      <a href="/professor/add" class="btn btn-primary" role="button" aria-disabled="true">Add Professors</a>
+    </div>
+    {% if professors %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>About</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for professor in professors %}
+          <tr>
+              <th scope="row">{{professor.id}}</th>
+              <td>{{professor.name}}</td>
+              <td>{{professor.about}}</td>
+              <td>
+                <a href="/professor/edit/{{professor.id}}" class="btn btn-success" role="button">Edit</a>
+          </tr>
+          {% endfor%}
+        </tbody>
+      </table>
+    {% else %}
+      <h3>there are no professors in the database yet.</h3>
+    {% endif %}
+  </div>
+
+{% endblock%}
