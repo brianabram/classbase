@@ -1,13 +1,13 @@
 {% extends "home-base.html" %}
-{% block title %}Add Classes{%endblock%}
+{% block title %}Add coursees{%endblock%}
 {%block page_content%}
 
 <div class="container">
-  <h1 class="mt-5"><i class="fa fa-course" aria-hidden="true"></i> Add Classes:</h1>
-  <form action="/class/add" method="post">
+  <h1 class="mt-5"><i class="fa fa-course" aria-hidden="true"></i> Add coursees:</h1>
+  <form action="/course/add" method="post">
     <div class="form-group">
       <label>Name</label>
-      <input class="form-control" type="text" name="name" placeholder="Name of the Class" required="true">
+      <input class="form-control" type="text" name="name" placeholder="Name of the course" required="true">
     </div>
 
 <div class="form-group">
@@ -34,7 +34,7 @@
   <textarea class="form-control" name="about" placeholder="About" required="true"></textarea>
 </div>
 
-  <button type="submit" class="btn btn-primary"> Add Class </button>
+  <button type="submit" class="btn btn-primary"> Add course </button>
 
 </form>
 </div>

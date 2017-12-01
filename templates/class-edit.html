@@ -1,17 +1,17 @@
 {% extends "home-base.html"%}
-{% block title %}Edit Class{% endblock %}
+{% block title %}Edit course{% endblock %}
 {% block page_content%}
 
  <div class="container">
-   <h1 class="mt-5"><i class="fa fa-course" aria-hidden="true"></i> Edit Class:</h1>
-   <form action="/class/edit/{{class.id}}" method="post">
+   <h1 class="mt-5"><i class="fa fa-course" aria-hidden="true"></i> Edit course:</h1>
+   <form action="/course/edit/{{course.id}}" method="post">
      <div class="form-group">
        <label>Name</label>
-       <input class="form-control" type="text" name="name" value="{{class.name}}" required="true">
+       <input class="form-control" type="text" name="name" value="{{course.name}}" required="true">
      </div>
      <div class="form-group">
        <label>About</label>
-       <select class="form-control" name="about">
+       <select course="form-control" name="about">
        </select>
      </div>
 
@@ -19,7 +19,7 @@
             <label>Professor</label>
             <select class="form-control" name="professor">
               {% for professor in professors %}
-                {% if professor == class.professor %}
+                {% if professor == course.professor %}
                   <option selected="selected">{{professor.name}}</option>
                 {% else %}
                   <option>{{professor.name}}</option>
@@ -33,7 +33,7 @@
               </div>
               <div class="form-group">
                 <label>About</label>
-                <textarea class="form-control" name="about" required="true">{{class.about}}</textarea>
+                <textarea class="form-control" name="about" required="true">{{course.about}}</textarea>
               </div>
               <button type="submit" class="btn btn-primary">Save Changes</button>
             </form>

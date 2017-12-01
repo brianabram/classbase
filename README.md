@@ -1,1 +1,1 @@
-# classbase
+# coursebase

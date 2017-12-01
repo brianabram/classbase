@@ -16,11 +16,11 @@ class Professor(db.Model):
     id= db.Column(db.Integer, primary_key=True)
     name= db.Column(db.string(64))
     about = db.Column(db.Text)
-    classes = db.relationship('Class', backref='professor', cascade="delete")
+    coursees = db.relationship('course', backref='professor', cascade="delete")
 
 
-class Class(db.model):
-    __tablename__ = 'classes'
+class course(db.model):
+    __tablename__ = 'courses'
     id= db.Column(db.Integer, primary_key=True)
     name= db.Column(db.string(256))
     about = db.Column(db.Text)
@@ -55,48 +55,48 @@ def add_professors():
 def edit_professor(id):
     professor = Professor.query.filter_by(id=id).first()
     if request.method == 'GET':
-        return render_template('professor-edit.html' professor=professor)
+        return render_template('professor-edit.html', professor=professor)
     if request.method == 'POST':
         professor.name = request.form['name']
         professor.about = request.form['about']
         db.session.commit()
         return redirect(url_for('show_all_professors'))
 
-@app.route('/classes')
-def classes():
-    classes = Class.query.all()
-    return render_template('class-all.html', classes=classes)
+@app.route('/coursees')
+def coursees():
+    coursees = course.query.all()
+    return render_template('course-all.html', coursees=coursees)
 
-@app.route('/class/add', methods=['GET', 'POST'])
-def add_classes():
+@app.route('/course/add', methods=['GET', 'POST'])
+def add_coursees():
     if request.method == 'GET':
         professors = Professor.query.all()
-        return render_template('class-add.html', professors=professors)
+        return render_template('course-add.html', professors=professors)
     if request.method == 'POST':
         name = request.form['name']
         about = request.form['about']
         professor_name = request.form['professor']
         professor = Professor.query.filter_by(name=professor_name).first()
-        class = Class(name=name, about=about, professor=professor)
+        course = course(name=name, about=about, professor=professor)
 
-        db.session.add(class)
+        db.session.add(course)
         db.session.commit()
-        return redirect(url_for('show_all_classes'))
+        return redirect(url_for('show_all_coursees'))
 
-@app.route('/class/edit/<int:id>', methods=['GET', 'POST'])
-def edit_class(id):
-    class = Class.query.filter_by(id=id).first()
+@app.route('/course/edit/<int:id>', methods=['GET', 'POST'])
+def edit_course(id):
+    course = course.query.filter_by(id=id).first()
     professors = Professor.query.all()
     if request.method == 'GET':
-        return render_template('class-edit.html' class=class, professor=professor)
+        return render_template('course-edit.html' course=course, professor=professor)
     if request.method == 'POST':
-        class.name = request.form['name']
-        class.about = request.form['about']
+        course.name = request.form['name']
+        course.about = request.form['about']
         professor_name = request.form['professor']
         professor = Professor.query.filter_by(name=professor_name).first()
-        class.professor = professor
+        course.professor = professor
         db.session.commit()
-        return redirect(url_for('show_all_classes'))
+        return redirect(url_for('show_all_coursees'))
 
 @app.route('/about')
 def about():
@@ -122,9 +122,9 @@ def form-demo():
 def get_user_name(name):
     return render_template('user.html', name=name)
 
-@app.route('/class.<int:id>/')
-def get_class_id(id):
-    return "Hi, this is %s and the class' id is %d" % ('administrator', id)
+@app.route('/course.<int:id>/')
+def get_course_id(id):
+    return "Hi, this is %s and the course' id is %d" % ('administrator', id)
 
 if __name__ == '__main__':
     app.run()
