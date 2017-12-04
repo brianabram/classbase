@@ -7,7 +7,7 @@
    <div class="row bottom-margin">
      <a href="/course/add" class="btn btn-primary" role="button" aria-disabled="true">Add coursees</a>
   </div>
-  {%if coursees%}
+  {%if courses%}
     <table class="table">
       <thead>
         <tr>
@@ -18,7 +18,7 @@
         </tr>
       </thead>
       <tbody>
-        {%for course in coursees%}
+        {%for course in courses%}
         <tr>
           <th scope="row">{{course.id}}</th>
           <td>{{course.name}}</td>
@@ -50,7 +50,9 @@
         </td>
         <td>
           <a href="/course/edit/{{course.id}}" class="btn btn-success" role="button" aria-disabled="true">Edit</a>
-        </td>
+          <a href="/course/delete/{{course.id}}" class="btn btn-danger" role="button" aria-disabled="true">Delete</a>
+          <button class="btn btn-warning delete_ajax_btn" data-course-id={{course.id}}>Delete Ajax</button>
+       </td>
       </tr>
 
       {%endfor%}
@@ -63,3 +65,53 @@
   </div>
 
   {% endblock %}
+
+  {% block scripts%}
+  {{super()}}
+  <script>
+    $(document).ready(function() {
+      $(".delete_ajax_btn").click(function(event) {
+        var course_id = $(this).data("course-id");
+        var row = $(this).parent().parent();
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            html: true,
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
+          },
+          function(isConfirm) {
+            if (isConfirm) {
+              $.ajax({
+                  type: "DELETE",
+                  url: "/api/course/" + course_id,
+                  success: function(response) {
+                    console.log(response);
+                    row.remove();
+                    swal({
+                      title: "Deleted!",
+                      text: response.name + " has been deleted.",
+                      type: "success",
+                      timer: 2500,
+                      showConfirmButton: false
+                    });
+                  }
+                })
+                .fail(function(error){
+                  swal({
+                    title: "Whoops...",
+                text: "Deletion failed",
+                type: "error",
+                timer: 2000,
+                showConfirmButton: false
+              });
+            });
+        }
+      });
+  });
+});
+</script>
+{% endblock%}

@@ -24,6 +24,7 @@
               <td>{{professor.about}}</td>
               <td>
                 <a href="/professor/edit/{{professor.id}}" class="btn btn-success" role="button">Edit</a>
+              </td>
           </tr>
           {% endfor%}
         </tbody>
@@ -34,3 +35,56 @@
   </div>
 
 {% endblock%}
+
+{%block scripts%}
+{{super()}}
+<script>
+  $(document).ready(function(){
+    $(".delete_ajax_btn").click(function(event) {
+      var professor_id = $(this).data("professor-id");
+      var row = $(this).parent().parent();
+      swal({
+          title: "Are you sure?",
+          text: "All classes pertaining to this professor will be deleted too!",
+          type: "warning",
+          html: true,
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Yes, delete it!",
+          closeOnConfirm: false,
+          showLoaderOnConfirm: true
+        },
+        function(isConfirm) {
+         if (isConfirm) {
+           $.ajax({
+               type: "DELETE",
+               url: "/api/professor/" + professor_id,
+               success: function(response) {
+                 console.log(response);
+                 row.remove();
+                 swal({
+                   title: "Deleted!",
+                   text: response.name + " has been deleted.",
+                   type: "success",
+                   timer: 2500,
+                   showConfirmButton: false
+                 });
+               }
+             })
+             .fail(function(error) {
+               swal({
+                 title: "Oops...",
+                 text: "Deletion failed",
+                 type: "error",
+                 timer: 2000,
+                 showConfirmButton: false
+               });
+             });
+         }
+       });
+   });
+ });
+</script>
+{% endblock%}
+
+  })

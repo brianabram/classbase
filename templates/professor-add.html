@@ -14,7 +14,34 @@
         <textarea class="form-control" name="about" placeholder="Brief Introduction" required="true"></textarea>
       </div>
       <button type="submit" class="btn btn-primary">Add Professor</button>
+      <button type="submit" class="btn btn-success" id="insert-ajax-btn">Add Professor Ajax</button>
     </form>
   </div>
 
 {% endblock%}
+{%block scripts%}
+{{super()}}
+<script>
+  $(document).ready(function(){
+    event.preventDefault();
+    $.Ajax({
+      type: "POST",
+      url: "/api/professor/add"
+      data: $("#add-professor-form").serialize(),
+      success: function(response){
+        window.location.replace("/professors");
+      }
+  })
+  .fail(function(error){
+    swal({
+      title: "Whoops...",
+      text: "Insertion failed",
+      type: "error",
+      timer: 2000,
+      showConfirmButton: false
+    });
+  });
+});
+});
+</script>
+{%endblock%}

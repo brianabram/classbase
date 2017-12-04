@@ -46,12 +46,6 @@
       </div>
     </div>
   </nav>
-  {% for category, message in get_flashed_messages(with_categories=true) %}
-    <div class="alert alert-{{category}}">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
-      {{ message }}
-    </div>
-  {% endfor %}
   {% block page_content%}
   {% endblock%}
 
@@ -60,6 +54,35 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+ <script>
+ toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "progressBar": true,
+    "preventDuplicates": true,
+    "positionClass": "toast-top-center",
+    "onclick": null,
+    "showDuration": "400",
+    "hideDuration": "500",
+    "timeOut": "3000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+}
+{% for category, message in get_flashed_messages(with_categories=true) %}
+  var toastr_category = '{{ category }}'
+
+  if (toastr_category === 'message'){
+    toastr_category = 'info';
+  }
+  toastr[toastr_category]('{{message}}');
+{% endfor %}
+
+</script>
+
   {% endblock%}
 </body>
 
